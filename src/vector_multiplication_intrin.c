@@ -1,15 +1,15 @@
 /*
- * File: vector_multiplication.c
+ * File: vector_multiplication_intrin.c
  * Author: @angelortizv
  * Date: October 18, 2023
  * Description: This C program generates random floating-point vectors, multiplies
- * them element-wise, and measures the execution time. It demonstrates basic array
- * operations and timing in C.
+ * them element-wise using Intel Intrinsics, and measures the execution time.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <immintrin.h>
 
 #define N 6000
 
@@ -19,9 +19,12 @@ void generateRandomVector(float* vector, int size, float scalingFactor) {
     }
 }
 
-void elementWiseMultiplication(const float* vector1, const float* vector2, float* result, int size) {
-    for (int i = 0; i < size; i++) {
-        result[i] = vector1[i] * vector2[i];
+void vectorMultiplicationIntrin(const float* vector1, const float* vector2, float* result, int size) {
+    for (int i = 0; i < size; i += 4) {
+        __m128 vec1 = _mm_loadu_ps(&vector1[i]);
+        __m128 vec2 = _mm_loadu_ps(&vector2[i]);
+        __m128 res = _mm_dp_ps(vec1, vec2, 0xFF);
+        _mm_storeu_ps(&result[i], res);
     }
 }
 
@@ -39,7 +42,7 @@ int main() {
     clock_t startingTime, endingTime;
     startingTime = clock();
 
-    elementWiseMultiplication(vector1, vector2, vector3, N);
+    vectorMultiplicationIntrin(vector1, vector2, vector3, N);
 
     endingTime = clock();
 
