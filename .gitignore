@@ -1,0 +1,37 @@
+# Ignore compiled object files and executables
+*.o
+*.out
+*.exe
+
+# Ignore files without extensions
+*.
+src/*.
+
+# Ignore compiled dynamic libraries (if applicable)
+*.dll
+*.so
+*.dylib
+
+# Ignore build artifacts and directories
+build/
+bin/
+Debug/
+Release/
+
+# Ignore IDE-specific files and directories
+.vscode/
+.idea/
+
+# Ignore generated documentation files
+doc/
+
+# Ignore any user-specific files or directories
+user-config/
+
+# Ignore macOS-specific files
+.DS_Store
+
+# Ignore temporary and backup files
+*~
+*.swp
+*.bak
